@@ -118,16 +118,19 @@ class Utilisateur {
         return new Promise((resolve, reject) => {
             const requete = 'SELECT COUNT(*) AS nbUsager FROM utilisateur u WHERE cle_api = $1';
             const parametres = [cleApi];
-
+    
             sql.query(requete, parametres, (erreur, resultat) => {
                 if (erreur) {
                     console.log(`Erreur sqlState ${erreur.sqlState} : ${erreur.sqlMessage}`);
                     reject(erreur);
+                } else if (resultat.rows && resultat.rows.length > 0) {
+                    resolve(resultat.rows[0].nbusager > 0);
+                } else {
+                    reject({ message: "Aucun résultat trouvé pour cette clé API", code: 404 });
                 }
-                resolve(resultat.rows[0].nbusager > 0);
             });
         });
-    }
+    }    
 
     static genererCleAPIUnique() {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
