@@ -36,7 +36,7 @@ exports.ajouterTache = (req, res) => {
         return res.status(400).json({ message: "Le champ 'titre' est requis dans le corps de la requête." });
     }
 
-    const erreurValidation = validerTypeChamps(nouvelleTache, true);
+    let erreurValidation = validerTypeChamps(nouvelleTache, true);
     if (erreurValidation) {
         return res.status(400).json({ message: erreurValidation.message });
     }
@@ -59,7 +59,7 @@ exports.modifierTache = (req, res) => {
     const tacheModifiee = req.body;
     const cle_api = req.headers.authorization;
 
-    const erreurValidation = champsAuthoriserTache(tacheModifiee);
+    let erreurValidation = champsAuthoriserTache(tacheModifiee);
 
     erreurValidation = validerTypeChamps(tacheModifiee, true);
     if (erreurValidation) {
@@ -84,7 +84,7 @@ exports.modifierStatutTache = (req, res) => {
     const nouveauStatut = req.params.statut;
     const cle_api = req.headers.authorization;
 
-    const erreurValidation = verifierStatut(nouveauStatut, true);
+    let erreurValidation = verifierStatut(nouveauStatut, true);
     if (erreurValidation) {
         return res.status(400).json({ message: erreurValidation.message });
     }
@@ -127,7 +127,7 @@ exports.ajouterSousTache = (req, res) => {
         return res.status(400).json({ message: "Le champ 'titre' est requis dans le corps de la requête." });
     }
    
-    const erreurValidation = champsAuthoriserSousTache(nouvelleSousTache);
+    let erreurValidation = champsAuthoriserSousTache(nouvelleSousTache);
 
     erreurValidation = validerTypeChamps(nouvelleSousTache, true);
     if (erreurValidation) {
@@ -153,7 +153,7 @@ exports.modifierSousTache = (req, res) => {
     const sousTacheModifiee = req.body;
     const cle_api = req.headers.authorization;
 
-    const erreurValidation = champsAuthoriserSousTache(sousTacheModifiee);
+    let erreurValidation = champsAuthoriserSousTache(sousTacheModifiee);
 
     erreurValidation = validerTypeChamps(sousTacheModifiee, true);
     if (erreurValidation) {
@@ -179,7 +179,7 @@ exports.modifierStatutSousTache = (req, res) => {
     const nouveauStatut = req.params.statut;
     const cle_api = req.headers.authorization;
 
-    const erreurValidation = verifierStatut(nouveauStatut, true);
+    let erreurValidation = verifierStatut(nouveauStatut, true);
     if (erreurValidation) {
         return res.status(400).json({ message: erreurValidation.message });
     }
@@ -275,7 +275,6 @@ function verifierStatut(nouveauStatut, requis = true) {
     if (nouveauStatut === undefined && requis) {
         return { message: "Le statut de complétude de la sous-tâche est requis." };
     } else if (!['true', 'false', '1', '0'].includes(String(nouveauStatut))) {
-        console.log(nouveauStatut + " catch");
         return { message: "Le champ 'complete' n'est pas au bon format. Valeurs acceptées: 0, 1, true, false." };
     }
     return null;

@@ -470,3 +470,6 @@
 ::1 - - [12/May/2024:18:09:13 +0000] "PATCH /api/taches/8/statut/1 HTTP/1.1" 200 241 "-" "PostmanRuntime/7.38.0"
 ::1 - - [12/May/2024:18:09:27 +0000] "PATCH /api/taches/8/statut/ HTTP/1.1" 404 66 "-" "PostmanRuntime/7.38.0"
 ::1 - - [12/May/2024:18:09:30 +0000] "PATCH /api/taches/8/statut/1 HTTP/1.1" 200 241 "-" "PostmanRuntime/7.38.0"
+::1 - - [12/May/2024:19:14:13 +0000] "POST /api/utilisateurs HTTP/1.1" 201 77 "-" "PostmanRuntime/7.38.0"
+::1 - - [12/May/2024:19:14:54 +0000] "POST /api/taches HTTP/1.1" 201 230 "-" "PostmanRuntime/7.38.0"
+::1 - - [12/May/2024:19:20:12 +0000] "PUT /api/taches/10 HTTP/1.1" 200 236 "-" "PostmanRuntime/7.38.0"
