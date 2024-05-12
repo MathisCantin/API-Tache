@@ -59,9 +59,9 @@ exports.modifierTache = (req, res) => {
     const tacheModifiee = req.body;
     const cle_api = req.headers.authorization;
 
-    champsAuthoriserTache(tacheModifiee);
+    const erreurValidation = champsAuthoriserTache(tacheModifiee);
 
-    const erreurValidation = validerTypeChamps(tacheModifiee, true);
+    erreurValidation = validerTypeChamps(tacheModifiee, true);
     if (erreurValidation) {
         return res.status(400).json({ message: erreurValidation.message });
     }
@@ -84,7 +84,10 @@ exports.modifierStatutTache = (req, res) => {
     const nouveauStatut = req.params.statut;
     const cle_api = req.headers.authorization;
 
-    verifierStatut(nouveauStatut, true);
+    const erreurValidation = verifierStatut(nouveauStatut, true);
+    if (erreurValidation) {
+        return res.status(400).json({ message: erreurValidation.message });
+    }
 
     Tache.modifierStatutTache(tacheId, nouveauStatut, cle_api)
         .then((resultat) => {
@@ -124,9 +127,9 @@ exports.ajouterSousTache = (req, res) => {
         return res.status(400).json({ message: "Le champ 'titre' est requis dans le corps de la requête." });
     }
    
-    champsAuthoriserSousTache(nouvelleSousTache);
+    const erreurValidation = champsAuthoriserSousTache(nouvelleSousTache);
 
-    const erreurValidation = validerTypeChamps(nouvelleSousTache, true);
+    erreurValidation = validerTypeChamps(nouvelleSousTache, true);
     if (erreurValidation) {
         return res.status(400).json({ message: erreurValidation.message });
     }
@@ -150,9 +153,9 @@ exports.modifierSousTache = (req, res) => {
     const sousTacheModifiee = req.body;
     const cle_api = req.headers.authorization;
 
-    champsAuthoriserSousTache(sousTacheModifiee);
+    const erreurValidation = champsAuthoriserSousTache(sousTacheModifiee);
 
-    const erreurValidation = validerTypeChamps(sousTacheModifiee, true);
+    erreurValidation = validerTypeChamps(sousTacheModifiee, true);
     if (erreurValidation) {
         return res.status(400).json({ message: erreurValidation.message });
     }
@@ -176,8 +179,11 @@ exports.modifierStatutSousTache = (req, res) => {
     const nouveauStatut = req.params.statut;
     const cle_api = req.headers.authorization;
 
-    verifierStatut(nouveauStatut, true);
-
+    const erreurValidation = verifierStatut(nouveauStatut, true);
+    if (erreurValidation) {
+        return res.status(400).json({ message: erreurValidation.message });
+    }
+    
     Tache.modifierStatutSousTache(tacheId, sousTacheId, nouveauStatut, cle_api)
         .then((resultat) => {
             res.status(200).send({
@@ -213,8 +219,9 @@ function champsAuthoriserTache(tacheModifiee){
     const unauthorizedFields = Object.keys(tacheModifiee).filter(field => !allowedFields.includes(field));
 
     if (unauthorizedFields.length > 0) {
-        throw { message: `Le nom de un ou des champs du corps de la requête ne sont pas au bon format. Champs acceptés: ${allowedFields.join(', ')}.` };
+        return { message: `Le nom de un ou des champs du corps de la requête ne sont pas au bon format. Champs acceptés: ${allowedFields.join(', ')}.` };
     }
+    return null;
 }
 
 function champsAuthoriserSousTache(tacheModifiee){
@@ -222,37 +229,38 @@ function champsAuthoriserSousTache(tacheModifiee){
     const unauthorizedFields = Object.keys(tacheModifiee).filter(field => !allowedFields.includes(field));
 
     if (unauthorizedFields.length > 0) {
-        throw { message: `Le nom de un ou des champs du corps de la requête ne sont pas au bon format. Champs acceptés: ${allowedFields.join(', ')}.` };
+        return { message: `Le nom de un ou des champs du corps de la requête ne sont pas au bon format. Champs acceptés: ${allowedFields.join(', ')}.` };
     }
+    return null;
 }
 
 function validerTypeChamps(tacheModifiee, verifierCorp = true) {
 
     if (Object.keys(tacheModifiee).length === 0 && verifierCorp) {
-        throw { message: "Le corps de la requête est vide." };
+        return { message: "Le corps de la requête est vide." };
     }
 
     if (tacheModifiee.titre){
         if (typeof tacheModifiee.titre !== 'string') {
-            throw { message: "Le champ 'titre' doit être une chaîne de caractères." };
+            return { message: "Le champ 'titre' doit être une chaîne de caractères." };
         }
     }
 
     if (tacheModifiee.description){
         if (typeof tacheModifiee.description !== 'string') {
-            throw { message: "Le champ 'description' doit être une chaîne de caractères." };
+            return { message: "Le champ 'description' doit être une chaîne de caractères." };
         }
     }
 
     if (tacheModifiee.date_debut) {
         if (typeof tacheModifiee.date_debut !== 'string' || !/^(\d{4})-(\d{2})-(\d{2})$/.test(tacheModifiee.date_debut)) {
-            throw { message: "Le champ 'date_debut' n'est pas au bon format. Format attendu: YYYY-MM-DD." };
+            return { message: "Le champ 'date_debut' n'est pas au bon format. Format attendu: YYYY-MM-DD." };
         }
     }
 
     if (tacheModifiee.date_echeance) {
         if (typeof tacheModifiee.date_echeance !== 'string' || !/^(\d{4})-(\d{2})-(\d{2})$/.test(tacheModifiee.date_echeance)) {
-            throw { message: "Le champ 'date_echeance' n'est pas au bon format. Format attendu: YYYY-MM-DD." };
+            return { message: "Le champ 'date_echeance' n'est pas au bon format. Format attendu: YYYY-MM-DD." };
         }
     }
 
@@ -265,8 +273,10 @@ function validerTypeChamps(tacheModifiee, verifierCorp = true) {
 
 function verifierStatut(nouveauStatut, requis = true) {
     if (nouveauStatut === undefined && requis) {
-        throw { message: "Le statut de complétude de la sous-tâche est requis." };
-    } else if (typeof nouveauStatut !== 'boolean' && !['true', 'false'].includes(String(nouveauStatut))) {
-        throw { message: "Le champ 'complete' n'est pas au bon format. Valeurs acceptées: true, false." };
+        return { message: "Le statut de complétude de la sous-tâche est requis." };
+    } else if (!['true', 'false', '1', '0'].includes(String(nouveauStatut))) {
+        console.log(nouveauStatut + " catch");
+        return { message: "Le champ 'complete' n'est pas au bon format. Valeurs acceptées: 0, 1, true, false." };
     }
+    return null;
 }

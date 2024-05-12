@@ -122,12 +122,7 @@
                     "type": "object",
                     "properties": {
                       "id": { "type": "integer", "example": 1 },
-                      "utilisateur_id": { "type": "integer", "example": 1 },
-                      "titre": { "type": "string", "example": "Faire les courses" },
-                      "description": { "type": "string", "example": "Acheter du lait et du pain" },
-                      "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18" },
-                      "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20" },
-                      "complete": { "type": "boolean", "example": false }
+                      "titre": { "type": "string", "example": "Faire les courses" }
                     }
                   }
                 }
@@ -214,7 +209,19 @@
                     "description": { "type": "string", "example": "Acheter du lait et du pain" },
                     "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
                     "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20" },
-                    "complete": { "type": "boolean", "example": false }
+                    "complete": { "type": "boolean", "example": false },
+                    "liste_sous_taches": [
+                      {
+                        "id": 1,
+                        "titre": "Acheter le lait",
+                        "complete": false
+                      },
+                      {
+                        "id": 2,
+                        "titre": "Acheter le pain",
+                        "complete": false
+                      }
+                    ]
                   }
                 }
               }
