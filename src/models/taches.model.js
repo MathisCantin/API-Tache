@@ -26,7 +26,6 @@ class Tache {
             const params = [];
 
             if (sousTacheId) {
-                console.log("sousTacheActif");
                 requete += ` AND sous_taches.id = $1`;
                 params.push(sousTacheId);
             }
@@ -58,7 +57,6 @@ class Tache {
                 };
             }
 
-            console.log(resultat);
             return resultat.rows[0];
         } catch (erreur) {
             throw erreur;
@@ -113,7 +111,9 @@ class Tache {
             const setClauseString = setClauses.join(', ');
     
             const requete = `UPDATE taches SET ${setClauseString} WHERE id = $${params.length + 1} RETURNING *`;
+
             params.push(id);
+
             const resultat = await sql.query(requete, params);
             return resultat.rows[0];
         } catch (erreur) {
@@ -138,8 +138,6 @@ class Tache {
             await this.trouverTache(id, cle_api);
             const requete = `DELETE FROM taches WHERE id = $1`;
             const params = [id];
-            console.log(requete);
-            console.log(params);
             const resultat = await sql.query(requete, params);
             return resultat.rowCount;
         } catch (erreur) {
@@ -162,11 +160,9 @@ class Tache {
     static async modifierSousTache(tache_id, id, sousTacheModifiee, cle_api) {
         try {
             await this.trouverTache(tache_id, cle_api, id);
-            
             const { titre, complete } = sousTacheModifiee;
             const requete = `UPDATE sous_taches SET titre = $1, complete = $2 WHERE id = $3 RETURNING *`;
             const params = [titre, complete, id];
-
             const resultat = await sql.query(requete, params);
             return resultat.rows[0];
         } catch (erreur) {
@@ -191,10 +187,7 @@ class Tache {
             await this.trouverTache(tache_id, cle_api, id);
             const requete = `DELETE FROM sous_taches WHERE id = $1`;
             const params = [id];
-            console.log(requete);
-            console.log(params);
             const resultat = await sql.query(requete, params);
-            console.log(resultat);
             return resultat.rowCount;
         } catch (erreur) {
             throw erreur;
@@ -219,7 +212,6 @@ class Tache {
             throw erreur;
         }
     }
-    
 }
 
 module.exports = Tache;

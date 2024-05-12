@@ -121,12 +121,10 @@ class Utilisateur {
 
             sql.query(requete, parametres, (erreur, resultat) => {
                 if (erreur) {
-                    console.log(erreur);
                     reject(erreur);
                 } else if (resultat.rows && resultat.rows.length > 0) {
                     resolve(resultat.rows[0].nbusager > 0);
                 } else {
-                    console.log("ici");
                     reject();
                 }
             });
