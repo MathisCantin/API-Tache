@@ -1,320 +1,587 @@
 {
-    "openapi": "3.1.0",
-    "info" : {
-        "title": "API Pokémon",
-        "summary": "Effectue des requêtes CRUD sur un bd SQL de pokemon.",
-        "version": "1.0.1"
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Documentation de l'API de gestion de tâches",
+    "summary": "Documentation complète de l'API de gestion de tâches",
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api-tache.onrender.com",
+      "description": "Serveur en ligne"
     },
-    "servers": [
-      {
-        "url": "http://api.pokemon.com",
-        "description": "Serveur en ligne"
-      },
-      {
-        "url": "http://127.0.0.1:3000/",
-        "description": "Serveur de développement"
-      }
-    ],
-    "paths": {
-      "/api/pokemons/:id": {
-        "get": {
-          "description": "Obtient les détails d'un Pokémon en fonction de son identifiant.",
-          "summary": "Afficher un Pokémon selon son ID",
-          "tags": ["Pokémon"],
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
+    {
+      "url": "http://localhost:3000",
+      "description": "Serveur de développement"
+    }
+  ],
+  "paths": {
+    "/api/utilisateurs": {
+      "post": {
+        "summary": "Créer un nouvel utilisateur",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
               "schema": {
-                "type": "integer"
-              },
-              "description": "ID du Pokémon"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Succès, renvoie les détails du Pokémon",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "nom": "Bulbasaur",
-                    "type_primaire": "Grass",
-                    "type_secondaire": "Poison",
-                    "pv": 45,
-                    "attaque": 49,
-                    "defense": 49
-                  }
+                "type": "object",
+                "properties": {
+                  "nom": { "type": "string" },
+                  "prenom": { "type": "string" },
+                  "courriel": { "type": "string" },
+                  "mot_de_passe": { "type": "string" }
                 }
               }
-            },
-            "404": {
-              "description": "Pokémon introuvable avec l'ID spécifié"
-            },
-            "500": {
-              "description": "Erreur lors de la récupération du Pokémon avec l'ID spécifié"
-            }
-          }
-        }
-      },
-      "/api/pokemons/liste": {
-        "get": {
-          "description": "Affiche la liste paginée de tous les Pokémon.",
-          "summary": "Afficher une liste paginée de tous les Pokémon",
-          "tags": ["Pokémon"],
-          "parameters": [
-            {
-              "name": "page",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer"
-              },
-              "description": "Numéro de la page (par défaut: 1)"
-            },
-            {
-              "name": "type",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "Type primaire du Pokémon pour le filtrage"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Succès, renvoie la liste paginée des Pokémon avec informations de pagination",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "pokemons": [
-                      {
-                        "nom": "Bulbasaur",
-                        "type_primaire": "Grass",
-                        "type_secondaire": "Poison",
-                        "pv": 45,
-                        "attaque": 49,
-                        "defense": 49
-                      }
-                    ],
-                    "type": "Grass",
-                    "nombrePokemonTotal": 94,
-                    "page": 2,
-                    "totalPage": 4
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Erreur lors de la récupération de la liste des Pokémon"
-            }
-          }
-        }
-      },
-      "/api/pokemons": {
-        "post": {
-          "description": "Ajoute un nouveau Pokémon.",
-          "summary": "Ajouter un Pokémon",
-          "tags": ["Pokémon"],
-          "requestBody": {
-            "description": "Corps de la requête",
-            "required": true,
-            "content": {
-              "application/json": {
-                "example": {
-                  "nom": "Bulbasaur",
-                  "type_primaire": "Grass",
-                  "type_secondaire": "Poison",
-                  "pv": 45,
-                  "attaque": 49,
-                  "defense": 49
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Succès, renvoie un message et les détails du nouveau Pokémon",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "message": "Le pokemon Bulbasaur a été ajouté avec succès",
-                    "pokemon": {
-                      "id": 999,
-                      "nom": "Bulbasaur",
-                      "type_primaire": "Grass",
-                      "type_secondaire": "Poison",
-                      "pv": 45,
-                      "attaque": 49,
-                      "defense": 49
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Format JSON invalide ou champs manquants",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "erreur": "Le format des données est invalide",
-                    "champ_manquant": ["pv", "attaque"]
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Erreur lors de la création du Pokémon"
-            }
-          }
-        }
-      },
-      "/api/pokemons/{id}": {
-        "put": {
-          "description": "Modifie les détails d'un Pokémon en fonction de son identifiant.",
-          "summary": "Modifier un Pokémon",
-          "tags": ["Pokémon"],
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              },
-              "description": "ID du Pokémon"
-            }
-          ],
-          "requestBody": {
-            "description": "Corps de la requête",
-            "required": true,
-            "content": {
-              "application/json": {
-                "example": {
-                  "nom": "Ivysaur",
-                  "type_primaire": "Grass",
-                  "type_secondaire": "Poison",
-                  "pv": 60,
-                  "attaque": 62,
-                  "defense": 63
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Succès, renvoie un message et les détails du Pokémon modifié",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "message": "Le pokemon id 999 a été modifié avec succès",
-                    "pokemon": {
-                      "id": 999,
-                      "nom": "Ivysaur",
-                      "type_primaire": "Grass",
-                      "type_secondaire": "Poison",
-                      "pv": 60,
-                      "attaque": 62,
-                      "defense": 63
-                    }
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Pokémon introuvable avec l'ID spécifié"
-            },
-            "400": {
-              "description": "Format JSON invalide ou champs manquants",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "erreur": "Le format des données est invalide",
-                    "champ_manquant": ["pv", "attaque"]
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Erreur lors de la modification du Pokémon"
             }
           }
         },
-        "delete": {
-          "description": "Supprime un Pokémon en fonction de son identifiant.",
-          "summary": "Supprimer un Pokémon",
-          "tags": ["Pokémon"],
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              },
-              "description": "ID du Pokémon"
+        "responses": {
+          "200": {
+            "description": "L'utilisateur a été créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "L'utilisateur a été créé" },
+                    "cle_api": { "type": "string", "example": "clé_API_générée" }
+                  }
+                }
+              }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "Succès, renvoie un message et les détails du Pokémon supprimé",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "message": "Le pokemon id 999 a été supprimé avec succès",
-                    "pokemon": {
-                      "id": 999,
-                      "nom": "Ivysaur",
-                      "type_primaire": "Grass",
-                      "type_secondaire": "Poison",
-                      "pv": 60,
-                      "attaque": 62,
-                      "defense": 63
+          },
+          "400": { "description": "Le courriel est déjà utilisé par un autre utilisateur" },
+          "500": { "description": "Une erreur interne s'est produite lors de la création de l'utilisateur" }
+        }
+      }
+    },
+    "/api/utilisateurs/nouvelleCle": {
+      "post": {
+        "summary": "Générer une nouvelle clé API pour un utilisateur existant",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "courriel": { "type": "string" },
+                  "mot_de_passe": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La nouvelle clé API a été générée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cle_api": { "type": "string", "example": "clé_API_générée" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Aucun utilisateur trouvé avec ce courriel" },
+          "401": { "description": "Courriel ou mot de passe incorrect" },
+          "500": { "description": "Une erreur interne s'est produite lors de la génération de la clé API" }
+        }
+      }
+    },
+    "/api/taches": {
+      "get": {
+        "summary": "Obtenir la liste de toutes les tâches de l'utilisateur",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "afficherToutes",
+            "in": "query",
+            "description": "Indique si toutes les tâches doivent être affichées",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La liste des tâches de l'utilisateur a été récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer", "example": 1 },
+                      "utilisateur_id": { "type": "integer", "example": 1 },
+                      "titre": { "type": "string", "example": "Faire les courses" },
+                      "description": { "type": "string", "example": "Acheter du lait et du pain" },
+                      "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
+                      "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20T18:00:00Z" },
+                      "complete": { "type": "boolean", "example": false }
                     }
                   }
                 }
               }
-            },
-            "404": {
-              "description": "Pokémon introuvable avec l'ID spécifié"
-            },
-            "500": {
-              "description": "Erreur lors de la suppression du Pokémon"
+            }
+          },
+          "500": { "description": "Une erreur interne s'est produite lors de la récupération de la liste des tâches" }
+        }
+      },  
+      "post": {
+        "summary": "Ajouter une nouvelle tâche pour l'utilisateur",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
             }
           }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titre": { "type": "string" },
+                  "description": { "type": "string" },
+                  "date_debut": { "type": "string", "format": "date-time" },
+                  "date_echeance": { "type": "string", "format": "date-time" },
+                  "complete": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La tâche a été ajoutée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "utilisateur_id": { "type": "integer", "example": 1 },
+                    "titre": { "type": "string", "example": "Faire les courses" },
+                    "description": { "type": "string", "example": "Acheter du lait et du pain" },
+                    "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
+                    "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20T18:00:00Z" },
+                    "complete": { "type": "boolean", "example": false }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Une erreur interne s'est produite lors de l'ajout de la tâche" }
         }
       }
     },
-    "components": {
-      "schemas": {
-        "Pokemon": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer"
+    "/api/taches/{id}": {
+      "get": {
+        "summary": "Obtenir les détails d'une tâche par son ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
             },
-            "nom": {
-              "type": "string"
+            "description": "ID de la tâche à récupérer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les détails de la tâche ont été récupérés avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "utilisateur_id": { "type": "integer", "example": 1 },
+                    "titre": { "type": "string", "example": "Faire les courses" },
+                    "description": { "type": "string", "example": "Acheter du lait et du pain" },
+                    "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
+                    "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20T18:00:00Z" },
+                    "complete": { "type": "boolean", "example": false }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Aucune tâche trouvée avec cet ID" },
+          "500": { "description": "Une erreur interne s'est produite lors de la récupération des détails de la tâche" }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour les informations d'une tâche par son ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
             },
-            "type_primaire": {
-              "type": "string"
-            },
-            "type_secondaire": {
-              "type": "string"
-            },
-            "pv": {
-              "type": "integer"
-            },
-            "attaque": {
-              "type": "integer"
-            },
-            "defense": {
-              "type": "integer"
+            "description": "ID de la tâche à mettre à jour"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titre": { "type": "string" },
+                  "description": { "type": "string" },
+                  "date_debut": { "type": "string", "format": "date-time" },
+                  "date_echeance": { "type": "string", "format": "date-time" },
+                  "complete": { "type": "boolean" }
+                }
+              }
             }
           }
+        },
+        "responses": {
+          "200": { "description": "Les informations de la tâche ont été mises à jour avec succès" },
+          "404": { "description": "Aucune tâche trouvée avec cet ID" },
+          "500": { "description": "Une erreur interne s'est produite lors de la mise à jour des informations de la tâche" }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une tâche par son ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "description": "ID de la tâche à supprimer"
+          }
+        ],
+        "responses": {
+          "200": { "description": "La tâche a été supprimée avec succès" },
+          "404": { "description": "Aucune tâche trouvée avec cet ID" },
+          "500": { "description": "Une erreur interne s'est produite lors de la suppression de la tâche" }
+        }
+      }
+    },
+    "/api/taches/{id}/statut/{statut}": {
+      "patch": {
+        "summary": "Modifier le statut d'une tâche",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la tâche à modifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "statut",
+            "in": "path",
+            "description": "Nouveau statut de la tâche (true pour terminé, false pour non terminé)",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Le statut de la tâche a été modifié avec succès" },
+          "404": { "description": "La tâche spécifiée n'a pas été trouvée" },
+          "500": { "description": "Une erreur interne s'est produite lors de la modification du statut de la tâche" }
+        }
+      }
+    },
+    "/api/taches/{id}/sousTaches": {
+      "post": {
+        "summary": "Ajouter une sous-tâche à une tâche par son ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "description": "ID de la tâche à laquelle ajouter la sous-tâche"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titre": { "type": "string" },
+                  "complete": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La sous-tâche a été ajoutée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "titre": { "type": "string", "example": "Acheter du lait" },
+                    "complete": { "type": "boolean", "example": false }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Aucune tâche trouvée avec cet ID" },
+          "500": { "description": "Une erreur interne s'est produite lors de l'ajout de la sous-tâche" }
+        }
+      }
+    },
+    "/api/taches/{id}/sousTaches/{idSousTache}": {
+      "put": {
+        "summary": "Mettre à jour une sous-tâche d'une tâche par son ID et l'ID de la sous-tâche",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "description": "ID de la tâche à laquelle appartient la sous-tâche"
+          },
+          {
+            "name": "idSousTache",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "description": "ID de la sous-tâche à mettre à jour"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titre": { "type": "string" },
+                  "complete": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "La sous-tâche a été mise à jour avec succès" },
+          "404": { "description": "Aucune tâche ou sous-tâche trouvée avec cet ID" },
+          "500": { "description": "Une erreur interne s'est produite lors de la mise à jour de la sous-tâche" }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une sous-tâche d'une tâche par son ID et l'ID de la sous-tâche",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "description": "ID de la tâche à laquelle appartient la sous-tâche"
+          },
+          {
+            "name": "idSousTache",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            },
+            "description": "ID de la sous-tâche à supprimer"
+          }
+        ],
+        "responses": {
+          "200": { "description": "La sous-tâche a été supprimée avec succès" },
+          "404": { "description": "Aucune tâche ou sous-tâche trouvée avec cet ID" },
+          "500": { "description": "Une erreur interne s'est produite lors de la suppression de la sous-tâche" }
+        }
+      }
+    },
+    "/api/taches/{id}/sousTaches/{idSousTache}/statut/{statut}": {
+      "patch": {
+        "summary": "Modifier le statut d'une sous-tâche",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Clé d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "r3gnq9tu9vpdyathawq77"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la tâche à laquelle appartient la sous-tâche",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "idSousTache",
+            "in": "path",
+            "description": "ID de la sous-tâche à modifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "statut",
+            "in": "path",
+            "description": "Nouveau statut de la sous-tâche (true pour terminée, false pour non terminée)",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Le statut de la sous-tâche a été modifié avec succès" },
+          "404": { "description": "La sous-tâche spécifiée n'a pas été trouvée" },
+          "500": { "description": "Une erreur interne s'est produite lors de la modification du statut de la sous-tâche" }
         }
       }
     }
   }
-  
+}

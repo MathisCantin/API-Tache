@@ -11,7 +11,7 @@ class Tache {
         this.complete = complete;
     }
 
-    static async trouverTache(id, cle_api, sousTacheId) { //si voie id, chemin trop long?
+    static async trouverTache(id, cle_api, sousTacheId) {
         try {
             const utilisateur_id = await this.trouverUtilisateurIdParCleAPI(cle_api);
             let requete = `
