@@ -52,7 +52,7 @@ class Tache {
 
             if (sousTacheId && resultat.rows[0].liste_sous_taches == null){
                 throw {
-                    message: `Sous-tâche introuvable avec l'id ${sousTacheId}`,
+                    message: `Sous-tâche introuvable avec l'id ${sousTacheId} de la tache ${id}`,
                     code: 404
                 };
             }

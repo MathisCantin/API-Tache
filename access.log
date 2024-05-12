@@ -473,3 +473,6 @@
 ::1 - - [12/May/2024:19:14:13 +0000] "POST /api/utilisateurs HTTP/1.1" 201 77 "-" "PostmanRuntime/7.38.0"
 ::1 - - [12/May/2024:19:14:54 +0000] "POST /api/taches HTTP/1.1" 201 230 "-" "PostmanRuntime/7.38.0"
 ::1 - - [12/May/2024:19:20:12 +0000] "PUT /api/taches/10 HTTP/1.1" 200 236 "-" "PostmanRuntime/7.38.0"
+::1 - - [12/May/2024:21:38:31 +0000] "OPTIONS /api/utilisateurs HTTP/1.1" 200 4 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [12/May/2024:21:39:09 +0000] "OPTIONS /api/utilisateurs HTTP/1.1" 200 4 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [12/May/2024:21:39:10 +0000] "OPTIONS /api/utilisateurs HTTP/1.1" 200 4 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
