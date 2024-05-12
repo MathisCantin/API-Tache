@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Documentation de l'API de gestion de tâches",
+    "title": "API de gestion de tâches",
     "summary": "Documentation complète de l'API de gestion de tâches",
     "version": "1.0.1"
   },
@@ -19,6 +19,7 @@
     "/api/utilisateurs": {
       "post": {
         "summary": "Créer un nouvel utilisateur",
+        "tags": ["Utilisateurs"],
         "requestBody": {
           "required": true,
           "content": {
@@ -58,6 +59,7 @@
     "/api/utilisateurs/nouvelleCle": {
       "post": {
         "summary": "Générer une nouvelle clé API pour un utilisateur existant",
+        "tags": ["Utilisateurs"],
         "requestBody": {
           "required": true,
           "content": {
@@ -95,17 +97,9 @@
     "/api/taches": {
       "get": {
         "summary": "Obtenir la liste de toutes les tâches de l'utilisateur",
+        "tags": ["Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "afficherToutes",
             "in": "query",
@@ -131,8 +125,8 @@
                       "utilisateur_id": { "type": "integer", "example": 1 },
                       "titre": { "type": "string", "example": "Faire les courses" },
                       "description": { "type": "string", "example": "Acheter du lait et du pain" },
-                      "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
-                      "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20T18:00:00Z" },
+                      "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18" },
+                      "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20" },
                       "complete": { "type": "boolean", "example": false }
                     }
                   }
@@ -145,18 +139,8 @@
       },  
       "post": {
         "summary": "Ajouter une nouvelle tâche pour l'utilisateur",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          }
-        ],
+        "tags": ["Tâches"],
+        "security": [{"CleApiAuth": []}],
         "requestBody": {
           "required": true,
           "content": {
@@ -187,7 +171,7 @@
                     "titre": { "type": "string", "example": "Faire les courses" },
                     "description": { "type": "string", "example": "Acheter du lait et du pain" },
                     "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
-                    "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20T18:00:00Z" },
+                    "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20" },
                     "complete": { "type": "boolean", "example": false }
                   }
                 }
@@ -201,17 +185,9 @@
     "/api/taches/{id}": {
       "get": {
         "summary": "Obtenir les détails d'une tâche par son ID",
+        "tags": ["Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -237,7 +213,7 @@
                     "titre": { "type": "string", "example": "Faire les courses" },
                     "description": { "type": "string", "example": "Acheter du lait et du pain" },
                     "date_debut": { "type": "string", "format": "date-time", "example": "2024-04-18T10:00:00Z" },
-                    "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20T18:00:00Z" },
+                    "date_echeance": { "type": "string", "format": "date-time", "example": "2024-04-20" },
                     "complete": { "type": "boolean", "example": false }
                   }
                 }
@@ -250,17 +226,9 @@
       },
       "put": {
         "summary": "Mettre à jour les informations d'une tâche par son ID",
+        "tags": ["Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -298,17 +266,9 @@
       },
       "delete": {
         "summary": "Supprimer une tâche par son ID",
+        "tags": ["Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -331,17 +291,9 @@
     "/api/taches/{id}/statut/{statut}": {
       "patch": {
         "summary": "Modifier le statut d'une tâche",
+        "tags": ["Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -373,17 +325,9 @@
     "/api/taches/{id}/sousTaches": {
       "post": {
         "summary": "Ajouter une sous-tâche à une tâche par son ID",
+        "tags": ["Sous-Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -434,17 +378,9 @@
     "/api/taches/{id}/sousTaches/{idSousTache}": {
       "put": {
         "summary": "Mettre à jour une sous-tâche d'une tâche par son ID et l'ID de la sous-tâche",
+        "tags": ["Sous-Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -490,17 +426,9 @@
       },
       "delete": {
         "summary": "Supprimer une sous-tâche d'une tâche par son ID et l'ID de la sous-tâche",
+        "tags": ["Sous-Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -534,17 +462,9 @@
     "/api/taches/{id}/sousTaches/{idSousTache}/statut/{statut}": {
       "patch": {
         "summary": "Modifier le statut d'une sous-tâche",
+        "tags": ["Sous-Tâches"],
+        "security": [{"CleApiAuth": []}],
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Clé d'authentification de l'utilisateur",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "r3gnq9tu9vpdyathawq77"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -581,6 +501,61 @@
           "404": { "description": "La sous-tâche spécifiée n'a pas été trouvée" },
           "500": { "description": "Une erreur interne s'est produite lors de la modification du statut de la sous-tâche" }
         }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiKeyResponse": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          }
+        }
+      },
+      "Tache": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "date_debut": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "date_echeance": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "complete": {
+            "type": "integer"
+          }
+        }
+      },
+      "SousTache": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string"
+          },
+          "complete": {
+            "type": "integer"
+          },
+          "tache_id": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "CleApiAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
       }
     }
   }
